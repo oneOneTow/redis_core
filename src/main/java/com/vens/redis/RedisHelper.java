@@ -15,30 +15,31 @@ public class RedisHelper {
     private JedisPool jedisPool;
     private ShardedJedisPool shardedJedisPool;
 
-    public RedisHelper(){
+    public RedisHelper() {
     }
 
-    public RedisHelper(JedisPool jedisPool){
-        this.jedisPool=jedisPool;
+    public RedisHelper(JedisPool jedisPool) {
+        this.jedisPool = jedisPool;
     }
 
-    public RedisHelper(ShardedJedisPool shardedJedisPool){
-        this.shardedJedisPool=shardedJedisPool;
+    public RedisHelper(ShardedJedisPool shardedJedisPool) {
+        this.shardedJedisPool = shardedJedisPool;
     }
 
-    public RedisHelper(JedisPool jedisPool, ShardedJedisPool shardedJedisPool){
-        this.jedisPool=jedisPool;
-        this.shardedJedisPool=shardedJedisPool;
+    public RedisHelper(JedisPool jedisPool, ShardedJedisPool shardedJedisPool) {
+        this.jedisPool = jedisPool;
+        this.shardedJedisPool = shardedJedisPool;
     }
 
-    public  Jedis getJedis() {
+    public Jedis getJedis() {
         return jedisPool.getResource();
     }
+
     public ShardedJedis getShardedJedis() {
         return shardedJedisPool.getResource();
     }
 
-    public <T> T jedisExecute(JedisCallBack<T> call) {
+    public <T> T jedisExecute(JedisCallBack<T> call) throws Exception{
         Jedis jedis = getJedis();
         try {
             return call.execute(jedis);
@@ -49,7 +50,7 @@ public class RedisHelper {
         }
     }
 
-    public <T> T jedisExecute(JedisCallBack<T> call, T defaultValue) {
+    public <T> T jedisExecute(JedisCallBack<T> call, T defaultValue) throws Exception{
         Jedis jedis = getJedis();
         T result = null;
         try {
@@ -61,7 +62,8 @@ public class RedisHelper {
             return result == null ? defaultValue : result;
         }
     }
-    public <T> T shardedJedisExecute(ShardedJedisCallBack<T> call) {
+
+    public <T> T shardedJedisExecute(ShardedJedisCallBack<T> call) throws Exception{
         ShardedJedis shardedJedis = getShardedJedis();
         try {
             return call.execute(shardedJedis);
@@ -72,7 +74,7 @@ public class RedisHelper {
         }
     }
 
-    public <T> T shardedJedisExecute(ShardedJedisCallBack<T> call, T defaultValue) {
+    public <T> T shardedJedisExecute(ShardedJedisCallBack<T> call, T defaultValue) throws Exception{
         ShardedJedis shardedJedis = getShardedJedis();
         T result = null;
         try {

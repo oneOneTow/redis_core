@@ -8,5 +8,5 @@ import redis.clients.jedis.ShardedJedis;
  * @date 2018/12/13
  */
 public interface ShardedJedisCallBack <T>{
-    T execute(ShardedJedis jedis);
+    T execute(ShardedJedis jedis) throws Exception;
 }
